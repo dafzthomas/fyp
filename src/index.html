@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Web Based Game</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script>
+        (function () {
+            'use strict';
+
+            function isCanvasSupported() {
+                var elem = document.createElement('canvas');
+                return !!(elem.getContext && elem.getContext('2d'));
+            }
+
+            function isWebGLSupported() {
+                var elem = document.createElement('canvas');
+                return !!(elem.getContext && elem.getContext('webgl'));
+            }
+
+            window.onload = function () {
+                if ('serviceWorker' in navigator) {
+                    // navigator.serviceWorker.register('/service-worker.js');
+                }
+
+                // var main = document.querySelector("main");
+                // var play = document.createElement('a');
+                // play.innerHTML = 'Play';
+
+                // if (isWebGLSupported) {
+                //     play.href = '/game-full.html';
+                // } else if (!isWebGLSupported && isCanvasSupported) {
+                //     play.href = '/game-2d.html';
+                // } else {
+                //     play.href = '/game-mvp.html'
+                // }
+
+                // main.appendChild(play);
+            };
+
+        })();
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Web Based Game</h1>
+    </header>
+    <main>
+        <a href="/game-3d.html">Play in 3D</a>
+        <a href="/game-text.html">Play in text mode</a>
+        <noscript>Hey there! This web app requires JavaScript to be enabled... sorry about that.</noscript>
+    </main>
+    <footer>
+        <p>Made by <a href="https://dafz.com">Dafydd Thomas</a></p>
+    </footer>
+    <aside class="network-status">
+        <span class="network-status-circle"></span>
+        <p class="network-status-text">You are online</p>
+    </aside>
+    <script src="/js/checkNetwork.js"></script>
+</body>
+
+</html>
