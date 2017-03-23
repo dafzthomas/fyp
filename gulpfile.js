@@ -12,6 +12,7 @@ const $ = require('gulp-load-plugins')({
         'gulp-clip-empty-files': 'clip',
         'gulp-babel': 'babel',
         'gulp-sass': 'sass',
+        'gulp-combine-mq': 'cmq',
         'gulp-cssnano': 'nano',
         'gulp-sourcemaps': 'sourcemaps',
         'gulp-autoprefixer': 'autoprefixer',
@@ -60,6 +61,9 @@ gulp.task('sass', function () {
         }))
         .pipe(!is_production ? $.sourcemaps.init() : $.util.noop())
         .pipe($.sass().on('error', $.sass.logError))
+        .pipe($.cmq({
+            beautify: true
+        }))
         .pipe(is_production ? $.nano() : $.util.noop())
         .pipe(!is_production ? $.sourcemaps.write('./maps') : $.util.noop())
         .pipe(gulp.dest(opts.scss.dest));
@@ -67,10 +71,8 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
     let options = {
-        mangleProperties: true,
-        mangle: {
-            toplevel: true
-        }
+        mangleProperties: false,
+
     };
 
     gulp.src(opts.libjs.source)
