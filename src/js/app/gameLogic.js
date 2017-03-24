@@ -114,4 +114,3 @@ const game = new Game(GameConfig);
 
 game.gameSendMessage(`Welcome to the game.`);
 game.backToLobby();
-// game.gameSendMessage(`You awake in a waiting room of sorts, there are 3 doors.`);
