@@ -3,47 +3,79 @@ const GameConfig = {
     Areas: {
         Lobby: {
             name: 'lobby',
-            description: 'An empty room with not much going on. There are two doors.'
+            texts: ['lobby', 'home', 'menu'],
+            description: `An empty room with not much going on... a lobby you could say. There's two doors. Where do they lead?`
         },
         Forest: {
             name: 'forest',
+            texts: ['forest'],
+            puzzle: ['trees', 'wood', 'grass', 'green'],
             description: 'Many trees and a light fog etc...'
         },
         Town: {
             name: 'town',
-            description: 'Small urban area etc...'
+            texts: ['town'],
+            puzzle: ['house', 'road', 'concrete', 'lights'],
+            description: `Small urban looking area. Some buildings and trees are around. `
         }
     },
-    CurrentArea: () => this.Areas.Lobby
+    CurrentArea: null,
+    GoingTo: {
+        area: null,
+        puzzleInProgress: false,
+        puzzleComplete: false
+    }
 }
 
 class Game {
     constructor({
         CurrentArea = this.CurrentArea,
         Areas = this.Areas,
-        QuestionPhrases = this.QuestionPhrases
+        GoingTo = this.GoingTo
     } = {}) {
         this.CurrentArea = CurrentArea;
         this.Areas = Areas;
-    }
-
-    get genericTextResponse() {
-        if (this.CurrentArea.name == 'lobby') {
-
-        }
+        this.GoingTo = GoingTo;
     }
 
     gameSendMessage(text) {
         // Text
         gameSendTextCommand(text);
 
-        // 2D
-
-        // 3D
     }
 
     whereAmI() {
         this.gameSendMessage(`You are now in the ${this.CurrentArea.name}. ${this.CurrentArea.description}`);
+    }
+
+    goToSelectedArea() {
+        if (this.GoingTo.area.name == "town") {
+            this.goToTown();
+        } else if (this.GoingTo.area.name == "forest") {
+            this.goToForest();
+        }
+    }
+
+    goToPuzzleCheck() {
+        if (this.CurrentArea == this.Areas.Lobby) {
+            if (this.GoingTo.puzzleComplete) {
+                this.CurrentArea = this.GoingTo.area;
+                this.GoingTo.puzzleComplete = false;
+                this.GoingTo.puzzleInProgress = false;
+                this.GoingTo.area = null;
+                this.whereAmI();
+                return;
+            } else {
+                this.GoingTo.puzzleInProgress = true;
+                this.gameSendMessage(`Enter the following commands to go through the door: ${this.GoingTo.area.puzzle.map(word => word)}`);
+                return;
+            }
+
+
+        } else {
+            this.gameSendMessage(`You cannot jump areas! Try going back to the lobby first.`);
+            return;
+        }
     }
 
     backToLobby() {
@@ -56,16 +88,30 @@ class Game {
     }
 
     goToForest() {
-        this.CurrentArea = this.Areas.Forest;
-        this.whereAmI();
+        console.log('goToForest');
+        if (this.CurrentArea == this.Areas.Forest) {
+            this.gameSendMessage(`You are already in the ${this.CurrentArea.name}!`);
+            return;
+        }
+
+        this.GoingTo.area = this.Areas.Forest;
+        this.goToPuzzleCheck();
     }
 
     goToTown() {
-        this.whereAmI();
+        console.log('goToTown');
+        if (this.CurrentArea == this.Areas.Town) {
+            this.gameSendMessage(`You are already in the ${this.CurrentArea.name}!`);
+            return;
+        }
+
+        this.GoingTo.area = this.Areas.Town;
+        this.goToPuzzleCheck();
     }
 }
 
 const game = new Game(GameConfig);
 
 game.gameSendMessage(`Welcome to the game.`);
-game.gameSendMessage(`You awake in a waiting room of sorts, there are 3 doors.`);
+game.backToLobby();
+// game.gameSendMessage(`You awake in a waiting room of sorts, there are 3 doors.`);
