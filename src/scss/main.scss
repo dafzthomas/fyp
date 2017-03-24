@@ -1,3 +1,21 @@
+@mixin tablet {
+    @media (max-width: 500px) {
+        @content;
+    }
+}
+
+@mixin phone {
+    @media (max-width: 320px) {
+        @content;
+    }
+}
+
+@mixin mini {
+    @media (max-width: 180px) {
+        @content;
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -12,35 +30,14 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    @media screen and (max-width: 500px) {
+    @include tablet {
         font-size: 80%;
     }
-    @media screen and (max-width: 320px) {
+    @include phone {
         font-size: 70%;
     }
-    @media screen and (max-width: 180px) {
+    @include mini {
         font-size: 50%;
-    }
-}
-
-.spinner {
-    border-radius: 100%;
-    width: 50px;
-    height: 50px;
-    border-top: 10px solid rgba(255, 150, 60, 0.3);
-    border-right: 10px solid rgba(255, 150, 60, 0.3);
-    border-bottom: 10px solid rgba(255, 150, 60, 0.3);
-    border-left: 10px solid #00BFFF;
-    animation: spinner 1s infinite linear;
-    transform: translateZ(0);
-}
-
-@keyframes spinner {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
     }
 }
 
@@ -89,16 +86,16 @@ body {
     overflow: scroll;
     border: 1px solid;
     padding: 10px;
-    @media screen and (max-width: 500px) {
+    @include tablet {
         height: calc(100% - 73px);
     }
-    @media screen and (max-width: 320px) {
+    @include phone {
         margin: 7px;
         padding: 5px;
         width: calc(100% - 14px);
         height: calc(100% - 64px);
     }
-    @media screen and (max-width: 180px) {
+    @include mini {
         margin: 5px;
         width: calc(100% - 10px);
         height: calc(100% - 55px);
@@ -128,11 +125,11 @@ body {
     position: absolute;
     bottom: 0;
     width: calc(100vw - 20px);
-    @media screen and (max-width: 320px) {
+    @include phone {
         margin: 7px;
         width: calc(100vw - 14px);
     }
-    @media screen and (max-width: 180px) {
+    @include mini {
         margin: 5px;
         width: calc(100vw - 10px);
     }
