@@ -36,7 +36,7 @@ const opts = {
         dest: is_production ? './public/js/app' : './dev/js/app'
     },
     html: {
-        source: './src/*.html',
+        source: './src/*',
         dest: is_production ? './public' : './dev'
     },
     img: {

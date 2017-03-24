@@ -18,27 +18,6 @@
                 var elem = document.createElement('canvas');
                 return !!(elem.getContext && elem.getContext('webgl'));
             }
-
-            window.onload = function () {
-                if ('serviceWorker' in navigator) {
-                    // navigator.serviceWorker.register('/service-worker.js');
-                }
-
-                // var main = document.querySelector("main");
-                // var play = document.createElement('a');
-                // play.innerHTML = 'Play';
-
-                // if (isWebGLSupported) {
-                //     play.href = '/game-full.html';
-                // } else if (!isWebGLSupported && isCanvasSupported) {
-                //     play.href = '/game-2d.html';
-                // } else {
-                //     play.href = '/game-mvp.html'
-                // }
-
-                // main.appendChild(play);
-            };
-
         })();
     </script>
 </head>
@@ -48,8 +27,8 @@
         <h1>Web Based Game</h1>
     </header>
     <main>
-        <a href="/game-3d.html">Play in 3D</a>
-        <a href="/game-text.html">Play in text mode</a>
+        <p><a href="/game-3d.html">Play in 3D</a></p>
+        <p><a href="/game-text.html">Play in text mode</a></p>
         <noscript>Hey there! This web app requires JavaScript to be enabled... sorry about that.</noscript>
     </main>
     <footer>
@@ -59,7 +38,12 @@
         <span class="network-status-circle"></span>
         <p class="network-status-text">You are online</p>
     </aside>
-    <script src="/js/checkNetwork.js"></script>
+    <script src="/js/app/checkNetwork.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
 </body>
 
 </html>
