@@ -56,11 +56,11 @@ gulp.task('sass', function () {
     return gulp.src(opts.scss.source)
         .pipe($.clip())
         .pipe($.autoprefixer({
-            browsers: ['last 2 versions'],
+            browsers: ['last 1 version'],
             cascade: false
         }))
         .pipe(!is_production ? $.sourcemaps.init() : $.util.noop())
-        .pipe($.sass().on('error', $.sass.logError))
+        .pipe($.sass.sync().on('error', $.sass.logError))
         .pipe($.cmq({
             beautify: true
         }))

@@ -41,6 +41,21 @@ body {
     }
 }
 
+a {
+    color: #FFF; 
+}
+
+.links {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    flex: 1 1;
+    article {
+        background: #2196f3;
+        padding: 20px;
+    }
+}
+
 .network-status {
     display: flex;
     justify-content: space-between;
@@ -49,8 +64,7 @@ body {
     bottom: -80px;
     margin: 20px;
     padding: 5px 20px;
-    background: #313131;
-    color: #FFF;
+    background: black;
     border-radius: 3px;
     transform: translateZ(0);
     will-change: all;
@@ -72,6 +86,7 @@ body {
         }
     }
     .network-status-text {
+        color: #FFF;
         margin-left: 15px;
     }
 }
