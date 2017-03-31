@@ -1,3 +1,4 @@
+const stats = new Stats();
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
 
@@ -170,7 +171,7 @@ function lobbyObjects() {
 
     ctx.restore();
 
-    
+
     // Lobby Floor
     ctx.save();
 
@@ -293,6 +294,8 @@ function touchTargets(pointerX, pointerY) {
 }
 
 function animate() {
+    stats.begin();
+
     // Clear Canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -310,6 +313,7 @@ function animate() {
         showPuzzle();
     }
 
+    stats.end();
     requestAnimationFrame(animate);
 }
 
@@ -328,8 +332,30 @@ window.addEventListener("keyup", function (e) {
 
 window.addEventListener("touchstart", function (e) {
     e.preventDefault();
-    let pointerX = e.touches[0].clientX;
-    let pointerY = e.touches[0].clientY;
+    onPointerDown(e);
+});
+
+window.addEventListener("mousedown", function (e) {
+    e.preventDefault();
+    onPointerDown(e);
+});
+
+window.addEventListener("touchend", function (e) {
+    e.preventDefault();
+    onPointerUp(e);
+});
+
+window.addEventListener("mouseup", function (e) {
+    e.preventDefault();
+    onPointerUp(e);
+});
+
+var timeout;
+var lastTap = 0;
+function onPointerDown(e) {
+    console.log(e);
+    let pointerX = e.clientX || e.touches[0].clientX;
+    let pointerY = e.clientY || e.touches[0].clientY;
 
     console.log(pointerX);
     console.log(pointerY);
@@ -363,16 +389,9 @@ window.addEventListener("touchstart", function (e) {
         // Right
         keys["right"] = !keys["right"];
     }
-});
+}
 
-
-var timeout;
-var lastTap = 0;
-
-window.addEventListener("touchend", function (e) {
-    e.preventDefault();
-
-
+function onPointerUp(e) {
     if (keys["jump"]) {
         keys["jump"] = false;
     }
@@ -384,10 +403,12 @@ window.addEventListener("touchend", function (e) {
         keys["right"] = false;
         return;
     }
-});
+}
 
 window.onload = function () {
     animate();
+    stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(stats.dom);
 };
 
 function gameSend2DCommand(command) {

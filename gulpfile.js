@@ -28,8 +28,8 @@ const opts = {
         dest: is_production ? './public/css' : './dev/css'
     },
     libjs: {
-        source: './src/js/three/**/*.js',
-        dest: is_production ? './public/js/three' : './dev/js/three'
+        source: './src/js/libs/**/*.js',
+        dest: is_production ? './public/js/libs' : './dev/js/libs'
     },
     js: {
         source: './src/js/app/**/*.js',
