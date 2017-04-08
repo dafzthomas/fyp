@@ -41,8 +41,16 @@ body {
     }
 }
 
-a {
-    color: #FFF; 
+article {
+    a {
+        color: #FFF;
+    }
+}
+
+#playPause {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .links {

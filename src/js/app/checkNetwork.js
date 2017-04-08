@@ -16,7 +16,7 @@ function showOfflineBanner(e) {
     el.classList.add('active');
 
     // Run new timer
-    timer = setTimeout(function () {
+    timer = setTimeout(() => {
         el.classList.remove('active');
     }, 5000);
 }

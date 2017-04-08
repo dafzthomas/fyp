@@ -71,8 +71,7 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
     let options = {
-        mangleProperties: false,
-
+        mangleProperties: false
     };
 
     gulp.src(opts.libjs.source)
@@ -81,9 +80,9 @@ gulp.task('js', function () {
 
     gulp.src(opts.js.source)
         .pipe($.clip())
-        .pipe($.babel({
+        .pipe(is_production ? $.babel({
             presets: ['es2015']
-        }))
+        }) : $.util.noop())
         .pipe(is_production ? minifier(options, uglifyjs) : $.util.noop()).on('error', function (err) {
             console.error('Error in compress task', err.toString());
         })
@@ -97,7 +96,7 @@ gulp.task('html', function () {
 });
 
 gulp.task('images', function () {
-    return gulp.src(opts.img.source)
+    gulp.src(opts.img.source)
         .pipe($.clip())
         .pipe(gulp.dest(opts.img.dest));
 });

@@ -46,7 +46,7 @@ class Game {
 
         // 2D
         if (window.location.href.indexOf("2d") > -1) {
-            gameSend2DCommand(text);
+            // gameSend2DCommand(text);
         }
 
     }
