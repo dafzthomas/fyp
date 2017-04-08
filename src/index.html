@@ -3,8 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196f3">
+    <link rel="manifest" href="/manifest.json">
     <title>Web Based Game</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link preload rel="stylesheet" href="/css/main.css">
     <script>
         (function () {
             'use strict';
@@ -27,8 +30,17 @@
         <h1>Web Based Game</h1>
     </header>
     <main>
-        <p><a href="/game-3d.html">Play in 3D</a></p>
-        <p><a href="/game-text.html">Play in text mode</a></p>
+        <section class="links">
+            <article>
+                <a href="/game-3d.html">Play in 3D</a>
+            </article>
+            <article>
+                <a href="/game-2d.html">Play in 2D</a>
+            </article>
+            <article>
+                <a href="/game-text.html">Play in text mode</a>
+            </article>
+        </section>
         <noscript>Hey there! This web app requires JavaScript to be enabled... sorry about that.</noscript>
     </main>
     <footer>

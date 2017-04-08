@@ -40,7 +40,14 @@ class Game {
 
     gameSendMessage(text) {
         // Text
-        gameSendTextCommand(text);
+        if (window.location.href.indexOf("text") > -1) {
+            gameSendTextCommand(text);
+        }
+
+        // 2D
+        if (window.location.href.indexOf("2d") > -1) {
+            // gameSend2DCommand(text);
+        }
 
     }
 
@@ -56,13 +63,19 @@ class Game {
         }
     }
 
+    cancelPuzzle() {
+        this.GoingTo.area = null;
+        this.GoingTo.puzzleInProgress = false;
+        this.GoingTo.puzzleComplete = false;
+
+        console.log(`Puzzle and travel cancelled.`);
+    }
+
     goToPuzzleCheck() {
         if (this.CurrentArea == this.Areas.Lobby) {
             if (this.GoingTo.puzzleComplete) {
                 this.CurrentArea = this.GoingTo.area;
-                this.GoingTo.puzzleComplete = false;
-                this.GoingTo.puzzleInProgress = false;
-                this.GoingTo.area = null;
+                this.cancelPuzzle();
                 this.whereAmI();
                 return;
             } else {

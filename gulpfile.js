@@ -28,8 +28,8 @@ const opts = {
         dest: is_production ? './public/css' : './dev/css'
     },
     libjs: {
-        source: './src/js/three/**/*.js',
-        dest: is_production ? './public/js/three' : './dev/js/three'
+        source: './src/js/libs/**/*.js',
+        dest: is_production ? './public/js/libs' : './dev/js/libs'
     },
     js: {
         source: './src/js/app/**/*.js',
@@ -56,11 +56,11 @@ gulp.task('sass', function () {
     return gulp.src(opts.scss.source)
         .pipe($.clip())
         .pipe($.autoprefixer({
-            browsers: ['last 2 versions'],
+            browsers: ['last 1 version'],
             cascade: false
         }))
         .pipe(!is_production ? $.sourcemaps.init() : $.util.noop())
-        .pipe($.sass().on('error', $.sass.logError))
+        .pipe($.sass.sync().on('error', $.sass.logError))
         .pipe($.cmq({
             beautify: true
         }))
@@ -71,8 +71,7 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
     let options = {
-        mangleProperties: false,
-
+        mangleProperties: false
     };
 
     gulp.src(opts.libjs.source)
@@ -81,9 +80,9 @@ gulp.task('js', function () {
 
     gulp.src(opts.js.source)
         .pipe($.clip())
-        .pipe($.babel({
+        .pipe(is_production ? $.babel({
             presets: ['es2015']
-        }))
+        }) : $.util.noop())
         .pipe(is_production ? minifier(options, uglifyjs) : $.util.noop()).on('error', function (err) {
             console.error('Error in compress task', err.toString());
         })
@@ -97,7 +96,7 @@ gulp.task('html', function () {
 });
 
 gulp.task('images', function () {
-    return gulp.src(opts.img.source)
+    gulp.src(opts.img.source)
         .pipe($.clip())
         .pipe(gulp.dest(opts.img.dest));
 });
