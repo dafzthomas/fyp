@@ -1,4 +1,4 @@
-// This should be grabbed from an external data source i.e. Firebase user data
+// This should be grabbed from an external data source if saving user data i.e. Firebase user data
 const GameConfig = {
     Areas: {
         Lobby: {
@@ -24,29 +24,27 @@ const GameConfig = {
         area: null,
         puzzleInProgress: false,
         puzzleComplete: false
-    }
+    },
+    GameType: null
 }
 
 class Game {
     constructor({
         CurrentArea = this.CurrentArea,
         Areas = this.Areas,
-        GoingTo = this.GoingTo
+        GoingTo = this.GoingTo,
+        GameType = this.GameType
     } = {}) {
         this.CurrentArea = CurrentArea;
         this.Areas = Areas;
         this.GoingTo = GoingTo;
+        this.GameType = GameType;
     }
 
     gameSendMessage(text) {
         // Text
-        if (window.location.href.indexOf("text") > -1) {
+        if (this.GameType == 'text') {
             gameSendTextCommand(text);
-        }
-
-        // 2D
-        if (window.location.href.indexOf("2d") > -1) {
-            // gameSend2DCommand(text);
         }
 
     }
@@ -71,7 +69,9 @@ class Game {
         console.log(`Puzzle and travel cancelled.`);
     }
 
-    goToPuzzleCheck() {
+    goToPuzzleCheck(area) {
+        this.GoingTo.area = this.GoingTo.area || area;
+
         if (this.CurrentArea == this.Areas.Lobby) {
             if (this.GoingTo.puzzleComplete) {
                 this.CurrentArea = this.GoingTo.area;
@@ -106,9 +106,7 @@ class Game {
             this.gameSendMessage(`You are already in the ${this.CurrentArea.name}!`);
             return;
         }
-
-        this.GoingTo.area = this.Areas.Forest;
-        this.goToPuzzleCheck();
+        this.goToPuzzleCheck(this.Areas.Forest);
     }
 
     goToTown() {
@@ -117,13 +115,8 @@ class Game {
             this.gameSendMessage(`You are already in the ${this.CurrentArea.name}!`);
             return;
         }
-
-        this.GoingTo.area = this.Areas.Town;
-        this.goToPuzzleCheck();
+        this.goToPuzzleCheck(this.Areas.Town);
     }
 }
 
 const game = new Game(GameConfig);
-
-game.gameSendMessage(`Welcome to the game.`);
-game.backToLobby();

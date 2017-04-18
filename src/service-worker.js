@@ -1,12 +1,42 @@
-const CACHE_NAME = 'fyp.dafz.com:1704.6';
+const CACHE_NAME = 'fyp.dafz.com:1704.15';
 const urlsToCache = [
     '/',
     '/index.html',
     '/game-text.html',
+    '/game-2d.html',
+    '/game-3d.html',
     '/css/main.css',
     '/js/app/gameLogic.js',
     '/js/app/gameText.js',
-    '/js/app/checkNetwork.js'
+    '/js/app/game2D.js',
+    '/js/app/game3D.js',
+    '/js/app/checkNetwork.js',
+    '/js/libs/stats.min.js',
+    '/js/libs/three.min.js',
+    '/js/libs/MTLLoader.js',
+    '/js/libs/OBJLoader.js',
+    '/js/libs/StereoEffect.js',
+    '/js/libs/DeviceOrientationController.js',
+    "/images/cloud.png",
+    "/images/fullscreen.png",
+    "/images/google-cardboard.png",
+    "/images/house.svg",
+    "/images/house-two.svg",
+    "/images/models/forest/Tent_Poles_01.obj",
+    "/images/models/forest/Tent_Poles_01.mtl",
+    "/images/models/forest/Campfire_01.obj",
+    "/images/models/forest/Campfire_01.mtl",
+    "/images/models/forest/Tree_01.obj",
+    "/images/models/forest/Tree_01.mtl",
+    "/images/character-2d/leftArm.png",
+    "/images/character-2d/legs.png",
+    "/images/character-2d/torso.png",
+    "/images/character-2d/rightArm.png",
+    "/images/character-2d/head.png",
+    "/images/character-2d/hair.png",
+    "/images/character-2d/leftArm-jump.png",
+    "/images/character-2d/legs-jump.png",
+    "/images/character-2d/rightArm-jump.png",
 ];
 
 function addToCache(request, response) {
@@ -69,18 +99,20 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
     // If HTML check network first, then fallback on cache
     // Else check cache first then network
-    if (event.request.headers.get('Accept').indexOf('text/html') >= 0) {
-        respondFromNetworkThenCache(event)
-    } else {
-        respondFromCacheThenNetwork(event)
-    }
+    // if (event.request.headers.get('Accept').indexOf('text/html') >= 0) {
+    //     respondFromNetworkThenCache(event)
+    // } else {
+    //     respondFromCacheThenNetwork(event)
+    // }
+
+    respondFromCacheThenNetwork(event)
 })
 
 self.addEventListener('activate', (event) => {
     var cacheWhitelist = [CACHE_NAME]
     // Clean up old cache versions
     event.waitUntil(
-        caches.keys().then(function (cacheNames) {
+        caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map(function (cacheName) {
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
