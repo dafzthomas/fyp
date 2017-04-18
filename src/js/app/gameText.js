@@ -1,40 +1,44 @@
-/* globals game */
-
 const terminal = document.querySelector('.terminal');
 const input = document.querySelector('.input');
+const sendButton = document.querySelector('#send');
 
 function gameTextCommand(text) {
     const message = text.toLowerCase();
+    let commandCount = 0;
 
     console.log({
         message
     });
 
-    // Lobby
+    let goToForest;
+    game.Areas.Forest.texts.map((word) => {
+        if (message.includes(word)) goToForest = true;
+        commandCount++;
+    });
+
+    let goToTown;
+    game.Areas.Town.texts.map((word) => {
+        if (message.includes(word)) goToTown = true;
+        commandCount++;
+    });
+
     let goToLobby;
     game.Areas.Lobby.texts.map((word) => {
         if (message.includes(word)) goToLobby = true;
+        commandCount++;
     });
+
     if (goToLobby) {
         game.backToLobby();
         return;
     }
 
-    // Forest
-    let goToForest;
-    game.Areas.Forest.texts.map((word) => {
-        if (message.includes(word)) goToForest = true;
-    });
     if (goToForest) {
         game.goToForest();
         return;
     }
 
-    // Town
-    let goToTown;
-    game.Areas.Town.texts.map((word) => {
-        if (message.includes(word)) goToTown = true;
-    });
+    
     if (goToTown) {
         game.goToTown();
         return;
@@ -65,6 +69,11 @@ function gameTextCommand(text) {
         }
     }
 
+    if (commandCount > 1) {
+        gameSendTextCommand(`Too many conflicting commands! I'm not sure of your intentions...`);
+        return;
+    }
+
 
 
     // Not recognised
@@ -93,9 +102,7 @@ function addMessage(text, user) {
     div.appendChild(p);
 
     let time = new Date().toLocaleString('en-GB').split(', ');
-    console.log({
-        time
-    });
+
     span.textContent = time;
     div.appendChild(span);
 
@@ -111,8 +118,16 @@ function gameSendTextCommand(text) {
     addMessage(text, false);
 }
 
+sendButton.addEventListener("click", onEnter);
+
 window.addEventListener('keydown', function (event) {
     if (event.keyCode == 13) {
         onEnter();
     }
 });
+
+window.onload = function () {
+    game.GameType = 'text';
+    game.gameSendMessage(`Welcome to the game.`);
+    game.backToLobby();
+};

@@ -2,6 +2,8 @@ const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
 const stats = new Stats();
 
+game.GameType = '2D';
+
 let WIDTH = window.innerWidth;
 let HEIGHT = window.innerHeight;
 
@@ -374,6 +376,11 @@ function forestObjects() {
     drawRectangle(0, floor.height, WIDTH, floor.height, 0, colours.forest.floor);
     // Forest Floor -------------------------------------
 
+    // Rain ----------------------------------------------
+    rain();
+
+    // Rain ----------------------------------------------
+
     clouds();
 
 }
@@ -396,10 +403,7 @@ function townObjects() {
     ctx.drawImage(images["house-two"], scene.x + house.two.x, floor.height - house.height, house.width * images["house-two"].width / images["house-two"].height, house.height);
     // Houses --------------------------------------------
 
-    // Rain ----------------------------------------------
-    rain();
-
-    // Rain ----------------------------------------------
+    
 }
 
 function drawDoor(x, y, width, height, borderThickness, colour) {
@@ -742,9 +746,6 @@ function onPointerDown(e) {
         y: e.clientY || e.touches[0].clientY
     }
 
-    // console.log(pointer.x);
-    // console.log(pointer.y);
-
     touchTargets(pointer);
 
     var currentTime = new Date().getTime();
@@ -791,6 +792,7 @@ function onPointerUp(e) {
 }
 
 window.onload = function () {
+    game.backToLobby();
     requestAnimationFrame(animate);
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(stats.dom);

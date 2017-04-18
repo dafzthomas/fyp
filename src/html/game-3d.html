@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196f3">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Game 3D</title>
+</head>
+
+<body>
+    <button id="fullscreen">
+        <img src="/images/fullscreen.png" alt="Go fullscreen">
+    </button>
+    <button id="cardboard">
+        <img src="/images/google-cardboard.png" alt="Google Cardboard VR mode button">
+    </button>
+    <aside class="network-status">
+        <span class="network-status-circle"></span>
+        <p class="network-status-text">You are online</p>
+    </aside>
+    <noscript>Hey there! This web app requires JavaScript to be enabled... sorry about that.</noscript>
+    <script src="/js/app/checkNetwork.js"></script>
+    <script src="/js/libs/stats.min.js"></script>
+    <script src="/js/libs/three.min.js"></script>
+    <script src="/js/libs/StereoEffect.js"></script>
+    <script src="/js/libs/DeviceOrientationController.js"></script>
+    <script src="/js/libs/MTLLoader.js"></script>
+    <script src="/js/libs/OBJLoader.js"></script>
+    <script src="/js/app/gameLogic.js"></script>
+    <script src="/js/app/game3D.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Game logic tests</title>
+    <script src="/js/app/gameLogic.js"></script>
+</head>
+
+<body>
+    <h1>It's all in the console!</h1>
+    <script>
+        var successStyle = [
+            'background: green',
+            'color: white',
+            'display: block',
+            'padding: 10px',
+            'line-height: 30px'
+        ].join(';');
+
+        var failStyle = [
+            'background: red',
+            'color: white',
+            'display: block',
+            'padding: 10px',
+            'line-height: 30px'
+        ].join(';');
+
+        function isDefined(test, item) {
+            if (item != undefined) {
+                console.log("%c" + test + " -> " + true, successStyle)
+            } else {
+                console.log("%c" + test + " is not defined", failStyle);
+            }
+        }
+
+        function gameVariableTests() {
+            console.group("Test whether game variable exists");
+            isDefined("Game.goToForest", game.goToForest);
+            isDefined("Game.goToTown", game.goToTown);
+            console.groupEnd();
+        }
+
+        (function () {
+
+            gameVariableTests();
+
+
+
+
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Game Text</title>
+    <script>
+        (function () {
+            'use strict';
+            var onload = function () {
+
+            };
+
+
+            if (!String.prototype.includes || !Array.prototype.map) {
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = '/js/libs/es5-shim.min.js';
+                script.onload = onload;
+                document.head.appendChild(script);
+
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = '/js/libs/es6-shim.min.js';
+                script.onload = onload;
+                document.head.appendChild(script);
+            } else {
+                onload();
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <section class="container">
+        <div class="terminal"></div>
+        <div class="inputBox">
+            <input id="command" label="Enter a command..." role="textbox" class="input" placeholder="Enter a command..." />
+            <button id="send">Send</button>
+        </div>
+    </section>
+    <aside class="network-status">
+        <span class="network-status-circle"></span>
+        <p class="network-status-text">You are online</p>
+    </aside>
+    <script src="/js/app/checkNetwork.js"></script>
+    <script src="/js/app/gameLogic.js"></script>
+    <script src="/js/app/gameText.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
+</body>
+
+</html>

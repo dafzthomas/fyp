@@ -47,10 +47,20 @@ article {
     }
 }
 
-#playPause {
+#cardboard,
+#fullscreen {
     position: absolute;
+    border: none;
+    background: transparent;
+    bottom: 0;
+}
+
+#fullscreen {
     right: 0;
-    top: 0;
+}
+
+#cardboard {
+    right: 55px;
 }
 
 .links {
@@ -99,29 +109,20 @@ article {
     }
 }
 
+.container {
+    margin: 10px;
+    height: 100%;
+}
+
 .terminal {
     font-size: 1.3rem;
-    margin: 10px;
-    position: absolute;
-    top: 0;
-    width: calc(100% - 20px);
-    height: calc(100% - 79px);
+    width: 100%;
+    height: 90%;
     overflow: scroll;
     border: 1px solid;
     padding: 10px;
-    @include tablet {
-        height: calc(100% - 73px);
-    }
     @include phone {
-        margin: 7px;
         padding: 5px;
-        width: calc(100% - 14px);
-        height: calc(100% - 64px);
-    }
-    @include mini {
-        margin: 5px;
-        width: calc(100% - 10px);
-        height: calc(100% - 55px);
     }
     p {
         color: #00BFFF;
@@ -142,18 +143,23 @@ article {
 .input {
     outline: none;
     border: 1px dashed;
-    margin: 10px;
     padding: 10px;
     font-size: 1.4rem;
-    position: absolute;
-    bottom: 0;
-    width: calc(100vw - 20px);
+    width: 40%;
+    margin-top: 10px;
     @include phone {
         margin: 7px;
-        width: calc(100vw - 14px);
     }
     @include mini {
         margin: 5px;
-        width: calc(100vw - 10px);
     }
+}
+
+#send {
+    width: 40%;
+    border: 1px dashed;
+    background: white;
+    padding: 10px;
+    font-size: 1.4rem;
+    cursor: pointer;
 }

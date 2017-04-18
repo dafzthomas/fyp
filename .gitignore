@@ -2,3 +2,5 @@ node_modules/
 
 dev/
 public/
+
+snippets.js

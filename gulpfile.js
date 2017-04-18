@@ -16,7 +16,7 @@ const $ = require('gulp-load-plugins')({
         'gulp-cssnano': 'nano',
         'gulp-sourcemaps': 'sourcemaps',
         'gulp-autoprefixer': 'autoprefixer',
-        'gulp-clean': 'clean'
+        'gulp-clean': 'clean',
     }
 });
 
@@ -36,13 +36,21 @@ const opts = {
         dest: is_production ? './public/js/app' : './dev/js/app'
     },
     html: {
-        source: './src/*',
+        source: './src/html/*.html',
         dest: is_production ? './public' : './dev'
     },
     img: {
         source: './src/images/**/*',
         dest: is_production ? './public/images' : './dev/images'
     },
+    misc: {
+        source: './src/*',
+        dest: is_production ? './public' : './dev'
+    },
+    tests: {
+        source: './tests/*',
+        dest: is_production ? './public/tests' : './dev/tests'
+    }
 };
 
 gulp.task('connect', function () {
@@ -53,7 +61,7 @@ gulp.task('connect', function () {
 });
 
 gulp.task('sass', function () {
-    return gulp.src(opts.scss.source)
+    gulp.src(opts.scss.source)
         .pipe($.clip())
         .pipe($.autoprefixer({
             browsers: ['last 1 version'],
@@ -95,6 +103,12 @@ gulp.task('html', function () {
         .pipe(gulp.dest(opts.html.dest));
 });
 
+gulp.task('misc', function () {
+    gulp.src(opts.misc.source)
+        .pipe($.clip())
+        .pipe(gulp.dest(opts.misc.dest));
+});
+
 gulp.task('images', function () {
     gulp.src(opts.img.source)
         .pipe($.clip())
@@ -113,12 +127,20 @@ gulp.task('clean', function () {
 
 });
 
+gulp.task('tests', function () {
+    gulp.src(opts.tests.source)
+        .pipe($.clip())
+        .pipe(gulp.dest(opts.tests.dest));
+});
+
 gulp.task('watch', function () {
     gulp.watch(opts.scss.source, ['sass']);
     gulp.watch(opts.html.source, ['html']);
     gulp.watch(opts.js.source, ['js']);
     gulp.watch(opts.img.source, ['images']);
+    gulp.watch(opts.misc.source, ['misc']);
+    gulp.watch(opts.tests.source, ['tests']);
     $.util.log('Watching files...');
 });
 
-gulp.task('serve', ['sass', 'js', 'html', 'images', 'watch', 'connect']);
+gulp.task('serve', ['sass', 'js', 'html', 'images', 'misc', 'tests', 'watch', 'connect']);
