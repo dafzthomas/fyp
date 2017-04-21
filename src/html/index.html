@@ -8,21 +8,6 @@
     <link rel="manifest" href="/manifest.json">
     <title>Web Based Game</title>
     <link preload rel="stylesheet" href="/css/main.css">
-    <script>
-        (function () {
-            'use strict';
-
-            function isCanvasSupported() {
-                var elem = document.createElement('canvas');
-                return !!(elem.getContext && elem.getContext('2d'));
-            }
-
-            function isWebGLSupported() {
-                var elem = document.createElement('canvas');
-                return !!(elem.getContext && elem.getContext('webgl'));
-            }
-        })();
-    </script>
 </head>
 
 <body>
@@ -30,6 +15,12 @@
         <h1>Web Based Game</h1>
     </header>
     <main>
+        <section class="links" style="margin-bottom: 20px;">
+            <article>
+                <a id="play" href="/game-text.html">Play Game</a>
+            </article>
+        </section>
+        <h2>NOT RECOMMENDED:</h2>
         <section class="links">
             <article>
                 <a href="/game-3d.html">Play in 3D</a>
@@ -51,6 +42,63 @@
         <p class="network-status-text">You are online</p>
     </aside>
     <script src="/js/app/checkNetwork.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            var playLink = document.querySelector('#play');
+
+            function isCanvasSupported() {
+                var elem = document.createElement('canvas');
+                return !!(elem.getContext && elem.getContext('2d'));
+            }
+
+            function isWebGLSupported() {
+                var elem = document.createElement('canvas');
+                var context = elem.getContext('webgl') || elem.getContext('experimental-webgl');
+                var firstPass = !!(elem.getContext && context);
+                var secondPass = context.getExtension('WEBGL_depth_texture');
+
+                console.log('context', context);
+
+
+                console.log({
+                    firstPass: firstPass,
+                    secondPass: secondPass
+                })
+
+                if (firstPass && secondPass != null) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            function isMobileDeviceVRCapable() {
+                console.log(window.DeviceMotionEvent);
+                console.log(window.DeviceOrientationEvent);
+                if ('DeviceMotionEvent' in window &&
+                    'DeviceOrientationEvent' in window &&
+                    'ontouchstart' in window) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            console.log(isMobileDeviceVRCapable());
+
+            if (isCanvasSupported() && isWebGLSupported()) {
+                playLink.href = "/game-3d.html";
+                return;
+            }
+
+            if (isCanvasSupported() && !isWebGLSupported()) {
+                playLink.href = "/game-2d.html";
+                return;
+            }
+        })();
+    </script>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js');

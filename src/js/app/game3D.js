@@ -5,6 +5,8 @@ let direction;
 let clock;
 let delta;
 let renderer;
+// let renderer2;
+// let renderer3;
 let effect;
 let ambientLight;
 let light;
@@ -19,6 +21,7 @@ let pMaterial;
 
 const goFullscreen = document.querySelector('#fullscreen');
 const goCardboard = document.querySelector('#cardboard');
+let gameCanvas = document.querySelector('#canvas');
 
 let meshFloor;
 
@@ -71,24 +74,69 @@ const models = {
     }
 };
 
+let rendererProps = {
+    low: {
+        antialias: false,
+        alpha: false,
+        canvas: gameCanvas,
+        precision: 'lowp'
+    },
+    med: {
+        antialias: false,
+        alpha: false,
+        canvas: gameCanvas,
+        precision: 'mediump'
+    },
+    high: {
+        antialias: true,
+        alpha: true,
+        canvas: gameCanvas,
+        precision: 'highp'
+    }
+}
+
 // Meshes Index
 const meshes = {}
 
 function init() {
+
+    setInterval(function () {
+        if (stats.getFPS() > 58) {
+            goCardboard.style.display = "block";
+        } else if (stats.getFPS() > 40 && stats.getFPS() < 58) {
+            
+        } else if (stats.getFPS() < 30) {
+            let yes = confirm("Performance seems a little low, would you like to try a version which may run faster?");
+            if (yes) {
+                window.location.href = '/game-2d.html';
+            }
+        }
+    }, 8000);
+
     game.GameType = '3D';
     scene = new THREE.Scene();
     clock = new THREE.Clock();
     camera = new THREE.PerspectiveCamera(90, WIDTH / HEIGHT, 0.1, 50);
     stats = new Stats();
     axes = new THREE.AxisHelper(100);
-    renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
-    });
+
+    renderer = new THREE.WebGLRenderer(rendererProps.high);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.BasicShadowMap;
     renderer.setClearColor(settings.clearColour, 1);
+
+    // renderer2 = new THREE.WebGLRenderer(rendererProps.med);
+    // renderer2.setSize(window.innerWidth, window.innerHeight);
+    // renderer2.shadowMap.enabled = true;
+    // renderer2.shadowMap.type = THREE.BasicShadowMap;
+    // renderer2.setClearColor(settings.clearColour, 1);
+
+    // renderer3 = new THREE.WebGLRenderer(rendererProps.high);
+    // renderer3.setSize(window.innerWidth, window.innerHeight);
+    // renderer3.shadowMap.enabled = true;
+    // renderer3.shadowMap.type = THREE.BasicShadowMap;
+    // renderer3.setClearColor(settings.clearColour, 1);
 
     scene.add(axes);
 
@@ -138,10 +186,15 @@ function init() {
 
     scene.fog = new THREE.Fog(settings.clearColour, 0.1, 30);
 
+    // if (currentRenderer == 1) {
+    //     controls = new DeviceOrientationController(camera, gameCanvas);
+    // } else if (currentRenderer == 2) {
+    //     controls = new DeviceOrientationController(camera, gameCanvas);
+    // } else if (currentRenderer == 3) {
+    //     controls = new DeviceOrientationController(camera, gameCanvas);
+    // }
 
-    document.body.appendChild(renderer.domElement);
-
-    controls = new DeviceOrientationController(camera, renderer.domElement);
+    controls = new DeviceOrientationController(camera, gameCanvas);
 
     controls.enableManualDrag = false;
 
@@ -152,13 +205,13 @@ function init() {
     document.body.appendChild(stats.dom);
 
 
-    renderer.domElement.addEventListener('touchstart', (e) => {
+    gameCanvas.addEventListener('touchstart', (e) => {
         if (e.touches.length < 2) {
             keyboard[87] = true;
         }
     });
 
-    renderer.domElement.addEventListener('touchend', (e) => {
+    gameCanvas.addEventListener('touchend', (e) => {
         keyboard[87] = false;
     });
 
@@ -166,6 +219,23 @@ function init() {
     snowParticles(particleCount);
 
     animate();
+}
+
+function setupRenderer(rend, props) {
+    // if (rend) {
+    //     rend.dispose();
+    //     rend.resetGLState();
+    //     rend.clear();
+    // }
+    rend = new THREE.WebGLRenderer(props);
+    rend.autoUpdateObjects = false;
+    for (let i = 0; i < scene.length; i++) {
+        rend.updateObject(scene[i]);
+    }
+    rend.setSize(window.innerWidth, window.innerHeight);
+    rend.shadowMap.enabled = true;
+    rend.shadowMap.type = THREE.BasicShadowMap;
+    rend.setClearColor(settings.clearColour, 1);
 }
 
 function snowParticles() {
@@ -231,7 +301,7 @@ function onResourcesLoaded() {
     for (let i = 1; i < 50; i++) {
         let scale = Math.floor(Math.random() * 6) + 1;
 
-        let percentage = (scale / 6) + .5 ;
+        let percentage = (scale / 6) + .5;
 
         meshes["tree1"] = models.tree_01.mesh.clone();
         meshes["tree1"].position.set(Math.floor(Math.random() * 100), percentage, Math.floor(Math.random() * 100));
@@ -266,7 +336,7 @@ function animate() {
     while (pCount--) {
         var particle = particles.vertices[pCount];
 
-        particle.y -= 0.1;
+        particle.y -= 0.1 * (delta * 100);
         if (particle.y < 0) {
             particle.y = 50;
         }
@@ -296,6 +366,14 @@ function animate() {
 
     light.position.set(camera.position.x, 10, camera.position.z);
 
+    // if (currentRenderer == 1) {
+    //     renderer.render(scene, camera);
+    // } else if (currentRenderer == 2) {
+    //     renderer2.render(scene, camera);
+    // } else if (currentRenderer == 3) {
+    //     renderer3.render(scene, camera);
+    // }
+
     renderer.render(scene, camera);
 
     if (webVR) {
@@ -305,14 +383,6 @@ function animate() {
     stats.end();
 
     requestAnimationFrame(animate);
-}
-
-function adapt(fps) {
-    if (fps < 58) {
-        
-    } else {
-        
-    }
 }
 
 function keyboardControls(delta) {
