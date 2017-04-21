@@ -170,6 +170,8 @@ loadImage("cloud", "png");
 loadImage("house", "svg");
 loadImage("house-two", "svg");
 
+loadImage("tree", "svg");
+
 function animatePlayer() {
     if (player.jumping) {
         ctx.drawImage(images["character-2d/legs-jump"], player.x, player.y - 6);
@@ -328,7 +330,7 @@ function setupRain(parts) {
             y: Math.random() * HEIGHT,
             l: Math.random() * 1,
             xs: -4 + Math.random() * 4 + 2,
-            ys: Math.random() * 10 + 10
+            ys: Math.random() * 10
         })
     }
 
@@ -336,7 +338,6 @@ function setupRain(parts) {
         particles[b] = init[b];
     }
 }
-setupRain(rainCount);
 
 function rain() {
     ctx.save();
@@ -367,6 +368,9 @@ function rain() {
 }
 
 function forestObjects() {
+    properties.rain = true;
+    setupRain(rainCount);
+
     // Forest Sky ---------------------------------------
     drawRectangle(0, 0, WIDTH, HEIGHT, 0, colours.sky);
     // Forest Sky ---------------------------------------
@@ -375,6 +379,10 @@ function forestObjects() {
     // Forest Floor -------------------------------------
     drawRectangle(0, floor.height, WIDTH, floor.height, 0, colours.forest.floor);
     // Forest Floor -------------------------------------
+
+    // Trees
+    ctx.drawImage(images["tree"], scene.x + house.one.x, floor.height - house.height, house.width * images["tree"].width / images["tree"].height, house.height);
+    ctx.drawImage(images["tree"], scene.x + house.two.x, floor.height - house.height, house.width * images["tree"].width / images["tree"].height, house.height);
 
     // Rain ----------------------------------------------
     rain();
@@ -386,8 +394,6 @@ function forestObjects() {
 }
 
 function townObjects() {
-    properties.rain = true;
-
     // Forest Sky ---------------------------------------
     drawRectangle(0, 0, WIDTH, HEIGHT, 0, colours.sky);
     // Forest Sky ---------------------------------------
@@ -403,7 +409,6 @@ function townObjects() {
     ctx.drawImage(images["house-two"], scene.x + house.two.x, floor.height - house.height, house.width * images["house-two"].width / images["house-two"].height, house.height);
     // Houses --------------------------------------------
 
-    
 }
 
 function drawDoor(x, y, width, height, borderThickness, colour) {
@@ -714,6 +719,10 @@ window.addEventListener("keyup", (e) => {
 
     if (e.keyCode == 27) {
         game.cancelPuzzle();
+
+        if (game.CurrentArea != game.Areas.Lobby) {
+            game.backToLobby();
+        }
     }
 });
 
@@ -796,6 +805,15 @@ window.onload = function () {
     requestAnimationFrame(animate);
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(stats.dom);
+
+    setInterval(function () {
+        if (fps < 30) {
+            let yes = confirm("Performance seems a little low, would you like to try a version which may run faster?");
+            if (yes) {
+                window.location.href = '/game-text.html';
+            }
+        }
+    }, 8000);
 };
 
 function gameSend2DCommand(command) {
@@ -818,7 +836,4 @@ function adapt() {
 
         setupRain(rainCount);
     }
-
-
-
 }
