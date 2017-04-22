@@ -67,7 +67,7 @@ function respondFromNetworkThenCache(event) {
     // Check network first, then cache
     const request = event.request;
     event.respondWith(
-        fetch(request)
+        fetch(request.url)
         .then(response => addToCache(request, response))
         .catch(() => fetchFromCache(event))
         .catch(() => offlineResponse())
@@ -79,7 +79,7 @@ function respondFromCacheThenNetwork(event) {
     const request = event.request;
     event.respondWith(
         fetchFromCache(event)
-        .catch(() => fetch(request))
+        .catch(() => fetch(request.url))
         .then(response => addToCache(request, response))
         .catch(() => offlineResponse())
     )
