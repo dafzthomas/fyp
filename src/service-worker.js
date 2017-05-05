@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fyp.dafz.com:1704.20';
+const CACHE_NAME = 'fyp.dafz.com:1704.21';
 const urlsToCache = [
     '/',
     '/index.html',
