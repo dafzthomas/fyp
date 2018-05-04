@@ -14,4 +14,4 @@ publish:
     - ls
     - sshpass -V
     - export SSHPASS=$USER_PASS
-    - sshpass -e scp -o stricthostkeychecking=no -r . $USERNAME@$HOST:/var/www/fyp.dafz.com/html
+    - sshpass -e scp -o stricthostkeychecking=no -r . $USERNAME@$HOST:$FOLDER
