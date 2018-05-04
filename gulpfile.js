@@ -144,3 +144,4 @@ gulp.task('watch', function () {
 });
 
 gulp.task('serve', ['sass', 'js', 'html', 'images', 'misc', 'tests', 'watch', 'connect']);
+gulp.task('build', ['sass', 'js', 'html', 'images', 'misc', 'tests']);

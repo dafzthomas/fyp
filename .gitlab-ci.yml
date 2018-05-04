@@ -1,0 +1,17 @@
+image: node:10
+
+before_script:
+ - apt-get update -qq && apt-get install -y -qq sshpass
+ - npm install
+
+# Publish tagged versions to npm
+publish:
+  stage: deploy
+  environment: fyp.dafz.com
+  script:
+    - npm run build
+    - cd public
+    - ls
+    - sshpass -V
+    - export SSHPASS=$USER_PASS
+    - sshpass -e scp -o stricthostkeychecking=no -r . $USERNAME@$HOST:/var/www/fyp.dafz.com/html
